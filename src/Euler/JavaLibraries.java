@@ -21,7 +21,8 @@ public class JavaLibraries {
         //Strings.StringCharsUnique_Unicode("\u00a5123\u00a5123");
         long start = System.nanoTime();
 
-        //Euler1to10.Problem12();
+//        Euler11to20.Problem16();
+        Euler21to30.Problem25();
 
         long end = System.nanoTime();
         long microseconds = ((end - start) / 1000);
