@@ -468,4 +468,7 @@ public class Euler11to20 {
         }
         System.out.println(result);
     }
+
+    public static void Problem18() {
+    }
 }

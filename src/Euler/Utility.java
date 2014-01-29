@@ -109,4 +109,16 @@ public class Utility {
 
         return retList.toArray(new Integer[retList.size()]);
     }
+
+    public static Integer[] findProperDivisors(long n) {
+        ArrayList<Integer> retList = new ArrayList<>();
+
+        for (int i = 1; i <= n / 2; i++) {
+            if (n % i == 0) {
+                retList.add(i);
+            }
+        }
+
+        return retList.toArray(new Integer[retList.size()]);
+    }
 }

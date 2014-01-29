@@ -22,7 +22,7 @@ public class JavaLibraries {
         long start = System.nanoTime();
 
 //        Euler11to20.Problem16();
-        Euler21to30.Problem25();
+        Euler21to30.Problem23();
 
         long end = System.nanoTime();
         long microseconds = ((end - start) / 1000);
