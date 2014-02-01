@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- *
  * @author joe
  */
 public class Utility {
@@ -84,14 +83,29 @@ public class Utility {
         return sb.toString();
     }
 
+    public static String join(int[] list, String spacer) {
+        Integer[] subList = new Integer[list.length];
+
+        for (int i = 0; i < list.length; i++) {
+            subList[i] = list[i];
+        }
+
+        return join(subList, spacer);
+    }
+
     public static String join(Integer[] list, String spacer) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(list[0]);
-        for (Integer i : list) {
-            sb.append(spacer);
-            sb.append(i);
+        if (list.length < 0) {
+            return "";
         }
+
+        sb.append(list[0]);
+        for(int i = 1; i < list.length; i++) {
+            sb.append(spacer);
+            sb.append(list[i]);
+        }
+
         return sb.toString();
     }
 
