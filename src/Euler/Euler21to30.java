@@ -173,4 +173,24 @@ public class Euler21to30 {
             }
         }
     }
+
+    public static void Problem27() {
+        int best = -1;
+        for(int a = -999; a < 1000; a++) {
+            for(int b = -999; b < 1000; b++) {
+                for(int n = 0; ; n++){
+                    int value = n*n + n*a + b;
+                    if(isPrime(value)){
+                        if(best < n) {
+                            best = n;
+                            System.out.println(a + ":" + b + ":" + n + ":" + value + ":" + a*b);
+                        }
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

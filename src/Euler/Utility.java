@@ -26,6 +26,7 @@ public class Utility {
     }
 
     public static boolean isPrime(long i) {
+        i = Math.abs(i);
         if (i == 0 || i == 1 || i == -1) {
             return false;
         } else if (i < 4) {
