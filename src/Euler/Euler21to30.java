@@ -193,4 +193,15 @@ public class Euler21to30 {
             }
         }
     }
+
+    public static void Problem28() {
+        long sum = 1;
+        for(int i = 3; i <= 1001; i+=2) {
+            long iSqr = i*i;
+            long iMin1 = i - 1;
+            sum += (iSqr - iMin1*0) + (iSqr - iMin1*1) + (iSqr - iMin1*2) + (iSqr - iMin1*3);
+        }
+
+        System.out.println(sum);
+    }
 }
