@@ -9,8 +9,10 @@ package Euler;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 import static Euler.Utility.findProperDivisors;
+import static Euler.Utility.isPrime;
 
 /**
  * @author joe
@@ -131,4 +133,44 @@ public class Euler21to30 {
         System.out.println(i);
     }
 
+    private static int Problem26_helper(int numerator, int denominator) {
+        List<Integer> dpList = new ArrayList<>();
+
+        while (true) {
+            if (numerator % denominator == 0) {
+                //terminated
+                return 0;
+            } else {
+                while (numerator < denominator) {
+                    numerator *= 10;
+                    dpList.add(-1);
+                }
+
+                for (int i = 0;i < dpList.size(); i++) {
+                    if (dpList.get(i) == numerator) {
+                        return dpList.size() - i;
+                    }
+                }
+
+                dpList.add(numerator);
+
+                numerator = numerator % denominator;
+                numerator *= 10;
+            }
+
+        }
+    }
+
+    public static void Problem26() {
+        int bLength = -1;
+        for (int i = 1; i < 1000; i++) {
+            if (isPrime(i)) {
+                int length = Problem26_helper(1, i);
+                if (length > bLength) {
+                    bLength = length;
+                    System.out.println(i + ":" + bLength);
+                }
+            }
+        }
+    }
 }
