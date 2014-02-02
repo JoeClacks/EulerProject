@@ -212,14 +212,45 @@ public class Euler21to30 {
         HashSet<Double> set = new HashSet<>();
 
         for (int a = 2; a <= 100; a++) {
-            for(int b = 2; b <= 100; b++) {
+            for (int b = 2; b <= 100; b++) {
                 set.add(Math.pow(a, b));
             }
-        } 
-        for(Double d: set) {
+        }
+        for (Double d : set) {
             System.out.print(d + ":");
         }
         System.out.println();
         System.out.println(set.size());
+    }
+
+    public static void Problem30() {
+        List<Long> outList = new ArrayList<>();
+        for (long i = 2; i < 10000000; i++) {
+            long a = i % 10;
+            long b = (i / 10) % 10;
+            long c = (i / 100) % 10;
+            long d = (i / 1000) % 10;
+            long e = (i / 10000) % 10;
+            long f = (i / 100000) % 10;
+            long g = (i / 1000000) % 10;
+
+            if (i ==  a * a * a * a * a
+                    + b * b * b * b * b
+                    + c * c * c * c * c
+                    + d * d * d * d * d
+                    + e * e * e * e * e
+                    + f * f * f * f * f
+                    + g * g * g * g * g) {
+                outList.add(i);
+                System.out.println(i);
+            }
+        }
+
+        long sum = 0;
+        for(Long l : outList) {
+            sum += l;
+        }
+
+        System.out.println(sum);
     }
 }
