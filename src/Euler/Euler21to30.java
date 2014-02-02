@@ -9,6 +9,7 @@ package Euler;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashSet;
 import java.util.List;
 
 import static Euler.Utility.findProperDivisors;
@@ -121,6 +122,7 @@ public class Euler21to30 {
         while (true) {
             c = b.add(a);
 
+
             if (c.toString().length() >= 1000) {
                 break;
             }
@@ -128,6 +130,8 @@ public class Euler21to30 {
             a = b;
             b = c;
             i++;
+
+
         }
 
         System.out.println(i);
@@ -146,7 +150,7 @@ public class Euler21to30 {
                     dpList.add(-1);
                 }
 
-                for (int i = 0;i < dpList.size(); i++) {
+                for (int i = 0; i < dpList.size(); i++) {
                     if (dpList.get(i) == numerator) {
                         return dpList.size() - i;
                     }
@@ -176,17 +180,16 @@ public class Euler21to30 {
 
     public static void Problem27() {
         int best = -1;
-        for(int a = -999; a < 1000; a++) {
-            for(int b = -999; b < 1000; b++) {
-                for(int n = 0; ; n++){
-                    int value = n*n + n*a + b;
-                    if(isPrime(value)){
-                        if(best < n) {
+        for (int a = -999; a < 1000; a++) {
+            for (int b = -999; b < 1000; b++) {
+                for (int n = 0; ; n++) {
+                    int value = n * n + n * a + b;
+                    if (isPrime(value)) {
+                        if (best < n) {
                             best = n;
-                            System.out.println(a + ":" + b + ":" + n + ":" + value + ":" + a*b);
+                            System.out.println(a + ":" + b + ":" + n + ":" + value + ":" + a * b);
                         }
-                    }
-                    else {
+                    } else {
                         break;
                     }
                 }
@@ -196,12 +199,27 @@ public class Euler21to30 {
 
     public static void Problem28() {
         long sum = 1;
-        for(int i = 3; i <= 1001; i+=2) {
-            long iSqr = i*i;
+        for (int i = 3; i <= 1001; i += 2) {
+            long iSqr = i * i;
             long iMin1 = i - 1;
-            sum += (iSqr - iMin1*0) + (iSqr - iMin1*1) + (iSqr - iMin1*2) + (iSqr - iMin1*3);
+            sum += (iSqr - iMin1 * 0) + (iSqr - iMin1 * 1) + (iSqr - iMin1 * 2) + (iSqr - iMin1 * 3);
         }
 
         System.out.println(sum);
+    }
+
+    public static void Problem29() {
+        HashSet<Double> set = new HashSet<>();
+
+        for (int a = 2; a <= 100; a++) {
+            for(int b = 2; b <= 100; b++) {
+                set.add(Math.pow(a, b));
+            }
+        } 
+        for(Double d: set) {
+            System.out.print(d + ":");
+        }
+        System.out.println();
+        System.out.println(set.size());
     }
 }
