@@ -24,7 +24,8 @@ public class JavaLibraries {
 //        Test.main();
 //        Euler1to10.Problem5();
 //        Euler11to20.Problem16();
-        Euler21to30.Problem30();
+//        Euler21to30.Problem30();
+          Euler31to40.Problem35();
 
         long end = System.nanoTime();
         long microseconds = ((end - start) / 1000);

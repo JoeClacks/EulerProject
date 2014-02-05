@@ -260,7 +260,7 @@ public class Euler1to10 {
     }
 
     //TODO: apply to a version of our isPrime function,
-    // and optimize the seive (we could omit all numbers except 6k +/- 1)
+    // and optimize the sieve (we could omit all numbers except 6k +/- 1)
     public static void Problem10_2() {
         int MAX = 2000000;
         BitSet bitSet = new BitSet(MAX);
