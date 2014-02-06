@@ -20,14 +20,29 @@ import static Euler.Utility.isPrime;
  */
 public class Euler21to30 {
 
-    public static boolean isAbundant(long i) {
-        long sum = 0;
+    public static int sumOfDivisors(int n) {
+        int sum = 1;
 
-        for (Integer divisor : findProperDivisors(i)) {
-            sum += divisor;
+        for (int i = 1; i * i <= n; i++) {
+            if (n % i == 0) {
+                sum += i;
+                sum += n/ i;
+            }
         }
 
-        return sum > i;
+        return sum;
+    }
+
+    public static boolean isAbundant(long i) {
+        return sumOfDivisors((int)i) > i;
+
+//        long sum = 0;
+
+//        for (Integer divisor : findProperDivisors(i)) {
+//            sum += divisor;
+//        }
+
+//        return sum > i;
     }
 
     public static void Problem23() {

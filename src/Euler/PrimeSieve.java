@@ -8,6 +8,8 @@ import java.util.BitSet;
 public class PrimeSieve {
     private static BitSet bitSet;
 
+    private static Integer max;
+
     private int mapIndex(int value) throws Exception {
         if ((value + 1) % 6 == 0) {
             return ((value + 1) / 3);
@@ -31,8 +33,7 @@ public class PrimeSieve {
         //we're storing values for 6k±1, so we need 1/3 the space
         bitSet = new BitSet((maximum + 2) / 3);
 
-
-        for (int i = 1; i < maximum / 6; i++) {
+        for (int i = 1; i < Math.sqrt(maximum) / 6; i++) {
             //-1 case
             //if (is prime) : mark all multiples as not prime
             int num = 6 * i - 1;

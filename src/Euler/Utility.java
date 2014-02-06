@@ -113,9 +113,11 @@ public class Utility {
     public static Integer[] findFactors(long n) {
         ArrayList<Integer> retList = new ArrayList<>();
 
-        for (int i = 1; i <= n / 2; i++) {
+
+        for (int i = 1; i * i <= n; i++) {
             if (n % i == 0) {
                 retList.add(i);
+                retList.add((int) n/i);
                 //System.out.println(i);
             }
         }
