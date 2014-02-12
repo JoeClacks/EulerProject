@@ -6,9 +6,8 @@ import java.util.*;
  * Created by Joseph Clark on 2/11/14.
  */
 public class CustomHashMap<K, V> implements Map<K, V> {
-    private List<Collection<Entry<K, V>>> list;
+    private Collection<Entry<K, V>>[] array;
 
-    private static final boolean useList = false;
     private static final int STARTING_HASH_SIZE = 128;
     private static final int HASH_MULTIPLIER = 2;
     private static final int MAX_SIZE_MULTIPLER = 2;
@@ -17,6 +16,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     private int hashSize;
 
     public class CustomEntry<K, V> implements Entry<K, V> {
+
         private final K key;
         private V value;
 
@@ -62,26 +62,30 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         int h = key.hashCode() % hashSize;
 
-        for (Entry<K, V> e : list.get(h)) {
-            if (e == null) {
-                return false;
-            } else if (e.getKey().getClass() == key.getClass()
-                    && e.getKey().equals(key)) {
-                return true;
+        if (array[h] != null) {
+            for (Entry<K, V> e : array[h]) {
+                if (e == null) {
+                    return false;
+                } else if (e.getKey().getClass() == key.getClass()
+                        && e.getKey().equals(key)) {
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-
     @Override
     public boolean containsValue(Object value) {
-        for (Collection<Entry<K, V>> innerList : list) {
-            for (Entry<K, V> e : innerList) {
-                if (e.getValue().getClass() == value.getClass()
-                        && e.getValue().equals(value))
-                    return true;
+        for (Collection<Entry<K, V>> innerList : array) {
+            if (innerList != null) {
+                for (Entry<K, V> e : innerList) {
+                    if (e.getValue().getClass() == value.getClass()
+                            && e.getValue().equals(value)) {
+                        return true;
+                    }
+                }
             }
         }
 
@@ -92,12 +96,14 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V get(Object key) {
         int h = key.hashCode() % hashSize;
 
-        for (Entry<K, V> e : list.get(h)) {
-            if (e == null) {
-                return null;
-            } else if (e.getKey().getClass() == key.getClass()
-                    && e.getKey().equals(key)) {
-                return e.getValue();
+        if (array[h] != null) {
+            for (Entry<K, V> e : array[h]) {
+                if (e == null) {
+                    return null;
+                } else if (e.getKey().getClass() == key.getClass()
+                        && e.getKey().equals(key)) {
+                    return e.getValue();
+                }
             }
         }
 
@@ -108,9 +114,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         int h = key.hashCode() % hashSize;
 
-        Collection<Entry<K, V>> subList = list.get(h);
+        Collection<Entry<K, V>> subList = array[h];
         if (subList == null) {
-            subList = list.set(h, getNewInnerCollection());
+            array[h] = getNewInnerCollection();
+            subList = array[h];
         }
 
         Entry<K, V> entry = null;
@@ -132,7 +139,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
             size++;
 
-            if(size > hashSize * MAX_SIZE_MULTIPLER) {
+            if (size > hashSize * MAX_SIZE_MULTIPLER) {
                 expandList();
             }
         }
@@ -144,19 +151,21 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V remove(Object key) {
         int h = key.hashCode() % hashSize;
 
-        for (Entry<K, V> e : list.get(h)) {
-            if (e == null) {
-                return null;
-            } else if (e.getKey().getClass() == key.getClass()
-                    && e.getKey().equals(key)) {
+        if (array[h] != null) {
+            for (Entry<K, V> e : array[h]) {
+                if (e == null) {
+                    return null;
+                } else if (e.getKey().getClass() == key.getClass()
+                        && e.getKey().equals(key)) {
 
-                V value = e.getValue();
+                    V value = e.getValue();
 
-                list.get(h).remove(e);
+                    array[h].remove(e);
 
-                size--;
+                    size--;
 
-                return value;
+                    return value;
+                }
             }
         }
 
@@ -165,13 +174,13 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        for(Entry<? extends K, ? extends V> e : m.entrySet()) {
+        for (Entry<? extends K, ? extends V> e : m.entrySet()) {
             put(e.getKey(), e.getValue());
         }
     }
 
-    public void putAll(Set<Entry<K, V>> s) {
-        for(Entry<K, V> e : s) {
+    private void putAll(Set<Entry<K, V>> s) {
+        for (Entry<K, V> e : s) {
             put(e.getKey(), e.getValue());
         }
     }
@@ -180,16 +189,18 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public void clear() {
         size = 0;
         hashSize = STARTING_HASH_SIZE;
-        list = getNewOuterCollection(hashSize);
+        array = (Collection<Entry<K, V>>[]) new Collection[hashSize];
     }
 
     @Override
     public Set<K> keySet() {
         Set<K> ret = new HashSet<>();
 
-        for (Collection<Entry<K, V>> innerList : list) {
-            for (Entry<K, V> e : innerList) {
-                ret.add(e.getKey());
+        for (Collection<Entry<K, V>> innerList : array) {
+            if (innerList != null) {
+                for (Entry<K, V> e : innerList) {
+                    ret.add(e.getKey());
+                }
             }
         }
 
@@ -198,11 +209,13 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
-        Set<V> ret = new HashSet<>();
+        List<V> ret = new ArrayList<>();
 
-        for (Collection<Entry<K, V>> innerList : list) {
-            for (Entry<K, V> e : innerList) {
-                ret.add(e.getValue());
+        for (Collection<Entry<K, V>> innerList : array) {
+            if (innerList != null) {
+                for (Entry<K, V> e : innerList) {
+                    ret.add(e.getValue());
+                }
             }
         }
 
@@ -213,9 +226,11 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public Set<Entry<K, V>> entrySet() {
         Set<Entry<K, V>> ret = new HashSet<>();
 
-        for (Collection<Entry<K, V>> innerList : list) {
-            for (Entry<K, V> e : innerList) {
-                ret.add(e);
+        for (Collection<Entry<K, V>> innerList : array) {
+            if (innerList != null) {
+                for (Entry<K, V> e : innerList) {
+                    ret.add(e);
+                }
             }
         }
 
@@ -227,16 +242,13 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return new ArrayList<>();
     }
 
-    private List<Collection<Entry<K, V>>> getNewOuterCollection(int size) {
-        return new ArrayList<>(size);
-    }
-
     private void expandList() {
         Set<Entry<K, V>> s = entrySet();
 
         hashSize = hashSize * HASH_MULTIPLIER;
+        size = 0;
 
-        list = getNewOuterCollection(hashSize);
+        array = (Collection<Entry<K, V>>[]) new Collection[hashSize];
 
         putAll(s);
     }

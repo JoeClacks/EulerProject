@@ -25,7 +25,13 @@ public class JavaLibraries {
 //        Euler1to10.Problem5();
 //        Euler11to20.Problem16();
 //        Euler21to30.Problem23();
-          Euler31to40.Problem37();
+//          Euler31to40.Problem37();
+        
+        CustomHashMap<Integer, String> h = new CustomHashMap<>();
+        h.put(1, "One");
+        
+        
+        System.out.println(h.size());
 
         long end = System.nanoTime();
         long microseconds = ((end - start) / 1000);
